@@ -10,20 +10,22 @@
 
 int main()
 {
-    std::vector<Actor*> actors;
+    // important that you make it so that there is a 
+    // variable to use...
+    World* world = new World;
 
-    std::vector<NeedEvent*> events;
+    IHandler::world = world;
+
+
 
     int time = 0;
 
     for (int i = 0; i < 5; i++) {
-        actors.push_back(new Actor(time));
+        world->addActor();
     }
 
-    events.push_back(new NeedEvent(UPDATE_NEEDS));
-    UpdateNeedHandler updateNeedHandler(events[0]);
     NeedEvent updateNeed(UPDATE_NEEDS);
-    // UpdateNeedHandler updateNeedHandler(&updateNeed);
+    UpdateNeedHandler updateNeedHandler(&updateNeed);
 
     updateNeed.add(&updateNeedHandler);
 
@@ -35,20 +37,25 @@ int main()
     SleepHandler sleeptHandler(&sleep);
     sleep.add(&sleeptHandler);
 
+    world->spit();
+    std::cout << world << std::endl;
+    std::cout << updateNeedHandler.world << std::endl;
 
-    for(;time < 2000; time++) {
 
-        for (int i = 0; i < actors.size(); i++) {
-            updateNeed.notify(actors[i]);
+    for(;time < 20000; time++) {
 
-            if (actors[i]->needs.hunger < 10) {
-                eat.notify(actors[i]);
+        for (int i = 0; i < world->actors.size(); i++) {
+            
+            updateNeed.notify();
+            if (world->curActor->needs.hunger < 10) {
+                eat.notify();
                 std::cout << "Actor ate!\n";
             }
-            if (actors[i]->needs.energy < 10) {
-                sleep.notify(actors[i]);
+            if (world->curActor->needs.energy < 10) {
+                sleep.notify();
                 std::cout << "Actor sleept!\n";
             }
+            world->nextActor();
         }
     }
 

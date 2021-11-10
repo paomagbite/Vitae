@@ -13,9 +13,6 @@
 
 class Actor {
 public:
-    Actor(int time) {
-        this->needs.timeLastUpdate = time;
-    }
     Needs needs;
 
     int eventStart = 0;

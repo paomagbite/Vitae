@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <cstdlib>
 
+#include "world.h"
 #include "event_types.h"
 
 // Observer Interface
@@ -21,7 +22,11 @@
 class IHandler {
 public:
   virtual void update() = 0;
+
+    static World* world;
 };
+
+World* IHandler::world = new World;
 
 // Observable interface
 class IEvent {
