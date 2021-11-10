@@ -10,8 +10,7 @@
 #define SRC_EVENT_NEEDS_H
 
 #include "event.h"
-#include "actor.h"
-
+// base class for all events regarding needs
 class NeedEvent : public IEvent {
 public:
     // must input the ID for this to work
@@ -26,9 +25,7 @@ public:
     }
 
     // overrides virtual notify and implements event specific notify
-    void notify() override {};
-    void notify(Actor* actor) {
-        this->actor = actor;
+    void notify() override {
         for (int i = 0; i < handlers.size(); i++) {
             this->handlers[i]->update();
         }
@@ -42,12 +39,14 @@ public:
     const int eventID;
 };
 
+//base class for need handlers
 class NeedHandler : public IHandler {
 public:
     // adds the event to the handler so it can access the necessary data
     NeedEvent* event;
 };
 
+// update need handler contains need update logic
 class UpdateNeedHandler : public NeedHandler {
 public:
     UpdateNeedHandler(NeedEvent* needEvent) {
@@ -55,8 +54,8 @@ public:
     }
 
     void update() {
-        this->event->actor->needs.hunger -= 0.32;
-        this->event->actor->needs.energy -= 0.104;
+        this->world->curActor->needs.hunger -= 0.32;
+        this->world->curActor->needs.energy -= 0.104;
     }
 
     NeedEvent* event;
@@ -69,7 +68,7 @@ public:
     }
 
     void update() {
-        this->event->actor->needs.hunger = 100;
+        this->world->curActor->needs.hunger = 100;
     }
 };
 
@@ -79,7 +78,7 @@ public:
         this->event = needEvent;
     }
     void update() {
-        this->event->actor->needs.energy = 100;
+        this->world->curActor->needs.energy = 100;
     }
 };
 
