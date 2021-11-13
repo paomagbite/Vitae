@@ -16,13 +16,18 @@ int main()
 
     IHandler::world = world;
 
-
-
     int time = 0;
 
     for (int i = 0; i < 5; i++) {
         world->addActor();
     }
+    ///*
+    Location house(false);
+    Location livingRoom(false);
+    Location bathRoom(false);
+
+    livingRoom.addLink(&bathRoom, 3);
+   // */
 
     NeedEvent updateNeed(UPDATE_NEEDS);
     UpdateNeedHandler updateNeedHandler(&updateNeed);

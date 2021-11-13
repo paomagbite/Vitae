@@ -16,6 +16,7 @@ void World::addActor() {
 }
 
 void World::nextActor() {
+    // this loop is important
     if (!(curActorSpot == actors.size())){
         curActor = actors[curActorSpot];
         curActorSpot++;
@@ -25,3 +26,4 @@ void World::nextActor() {
         curActorSpot = 0;
     }
 }
+

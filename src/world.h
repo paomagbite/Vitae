@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "actor.h"
+#include "location.h"
 
 // class holding all game data
 class World {
@@ -25,6 +26,7 @@ public:
     //makes the current actor processed the next one in queue
     void nextActor();
 
+
     void spit() {
         std::cout << "Hey\n";
     }
@@ -33,6 +35,8 @@ public:
 
     Actor* curActor;
     int curActorSpot = 0;
+
+    std::vector<Location*> locations;
 };
 
 
