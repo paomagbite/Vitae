@@ -17,8 +17,8 @@
 #include "world.h"
 #include "event_types.h"
 
-// Observer Interface
-//static int observer_id;
+
+// Handler Interface
 class IHandler {
 public:
   virtual void update() = 0;
@@ -28,7 +28,7 @@ public:
 
 World* IHandler::world = new World;
 
-// Observable interface
+// Event interface
 class IEvent {
 public:
   virtual void add(IHandler* iHandler) = 0;
