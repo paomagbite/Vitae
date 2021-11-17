@@ -16,21 +16,24 @@
 struct Link;
 class Location {
 public:
-    Location(bool outdoor = 1);
+    Location(bool outdoor = 0);
 
+    // adds link, default is to add link in the desitnation location as well
     void addLink(Location* toLocation, int distance, bool addToOtherLoc = 1); 
 
 
+    //get if indoor or outdoor so player can see weather if outside
     bool getIfOutdoor() {
         return outdoor_;
     }
-
+    
+    // contains location links to other locations
     std::vector<Link*> links;
 
 private:
     bool outdoor_;
 
-
+    // private func to check if location is in desintation links
     bool locPresentInLinks_(Location* loc);
     
 };

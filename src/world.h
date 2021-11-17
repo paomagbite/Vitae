@@ -26,6 +26,8 @@ public:
     //makes the current actor processed the next one in queue
     void nextActor();
 
+    void addLocation();
+
 
     void spit() {
         std::cout << "Hey\n";
