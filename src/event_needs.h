@@ -10,77 +10,21 @@
 #define SRC_EVENT_NEEDS_H
 
 #include "event.h"
-// base class for all events regarding needs
-class NeedEvent : public IEvent {
+#include "actor.h"
+
+class NeedUpdate : public Event<NeedUpdate> {
 public:
-    // must input the ID for this to work
-    NeedEvent(int ID) : eventID(ID) {}
-    // implements the specific add handler
-    void add(IHandler* iHandler) override {
-        this->handlers.push_back(iHandler);
+    NeedUpdate(Actor* curActor) {
+        this->actor_ = curActor;
     }
-    // implemnts the specific remove handler
-    void remove(IHandler* iHandler) override {
-    handlers.erase(std::remove(handlers.begin(), handlers.end(), iHandler), handlers.end());
+    
+    void run() {
+        this->actor_->needs.hunger -= 0.32;
+        this->actor_->needs.energy -= 0.104;
     }
 
-    // overrides virtual notify and implements event specific notify
-    void notify() override {
-        for (int i = 0; i < handlers.size(); i++) {
-            this->handlers[i]->update();
-        }
-        // std::cout << "I'm notifying now\n";
-    }
-
-    Actor* actor;
-
-    std::vector<IHandler*> handlers;
-
-    const int eventID;
+private:
+    Actor* actor_;
 };
-
-//base class for need handlers
-class NeedHandler : public IHandler {
-public:
-    // adds the event to the handler so it can access the necessary data
-    NeedEvent* event;
-};
-
-// update need handler contains need update logic
-class UpdateNeedHandler : public NeedHandler {
-public:
-    UpdateNeedHandler(NeedEvent* needEvent) {
-        this->event = needEvent;
-    }
-
-    void update() {
-        this->world->curActor->needs.hunger -= 0.32;
-        this->world->curActor->needs.energy -= 0.104;
-    }
-
-    NeedEvent* event;
-};
-
-class EatHandler : public NeedHandler {
-public:
-    EatHandler(NeedEvent* needEvent) {
-        this->event = needEvent;
-    }
-
-    void update() {
-        this->world->curActor->needs.hunger = 100;
-    }
-};
-
-class SleepHandler : public NeedHandler {
-public:
-    SleepHandler(NeedEvent* needEvent) {
-        this->event = needEvent;
-    }
-    void update() {
-        this->world->curActor->needs.energy = 100;
-    }
-};
-
 
 #endif /* end of include guard SRC_EVENT_NEEDS_H */

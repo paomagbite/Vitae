@@ -9,6 +9,11 @@
 World::World() {
     actors.push_back(new Actor);
     curActor = actors[0];
+
+    addLocation();
+    addLocation();
+
+    locations[0]->addLink(locations[1], 10);
 }
 
 void World::addActor() {
@@ -27,3 +32,6 @@ void World::nextActor() {
     }
 }
 
+void World::addLocation() {
+    locations.push_back(new Location);
+}

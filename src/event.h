@@ -9,33 +9,45 @@
 
 #define SRC_EVENT_H
 
-#include <iostream>
 #include <vector>
 #include <algorithm>
-#include <cstdlib>
 
-#include "world.h"
 #include "event_types.h"
 
 
 // Handler Interface
-class IHandler {
+template <class T>
+class Handler {
 public:
-  virtual void update() = 0;
+  virtual void update(T *event) = 0;
 
-    static World* world;
 };
 
-World* IHandler::world = new World;
 
 // Event interface
-class IEvent {
+template <class T>
+class Event {
 public:
-  virtual void add(IHandler* iHandler) = 0;
+    Event() {}
+    virtual ~Event() {}
+    
+    void add(Handler<T> &handler) {
+        this->handlers_.push_back(&handler);
+    }
+    
+    void remove(Handler<T> &handler) {
+        this->handlers_.erase(std::remove(handlers_.begin(), handlers_.end(),&handler), handlers_.end());
+    }
+    
+    void notify() {
+        for(int i = handlers_.begin(); i!= handlers_.end(); i++) {
+            this->handlers_->update(static_cast<T *>(this));
+        }
+    }
 
-  virtual void remove(IHandler* iHandler) = 0;
 
-  virtual void notify() = 0;
+private:
+    std::vector<Handler<T> *> handlers_;
 };
 #endif /* end of include guard SRC_EVENT_H */
 
